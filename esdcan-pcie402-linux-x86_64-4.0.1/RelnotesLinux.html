@@ -1,0 +1,793 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta content="de" http-equiv="Content-Language" />
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<title>CAN Driver for Linux</title>
+<style type="text/css">
+body {
+font-family: verdana,arial,sans-serif;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+font-size: small;
+line-height: normal;
+font-size-adjust: none;
+font-stretch: normal;
+color: black;
+}
+a:link {
+color: #264b99;
+background-color: white;
+}
+a:visited {
+color: #5e85d7;
+background-color: white;
+}
+a:active {
+color: #7799dd;
+background-color: white;
+}
+tt {
+font-family: "courier new",monospace;
+font-style: normal;
+font-variant: normal;
+font-weight: normal;
+font-size: small;
+line-height: normal;
+font-size-adjust: none;
+font-stretch: normal;
+}
+li {
+margin-top: 0.15em;
+margin-bottom: 0.15em;
+list-style-type: square;
+}
+div.bluehead {
+padding: 5px;
+text-align: center;
+color: white;
+font-weight: bold;
+background-color: #0085ca;
+}
+.head1 {
+font-size: x-large;
+}
+.head2 {
+font-size: large;
+}
+.ver {
+font-size: large;
+font-weight: bold;
+}
+.date {
+font-size: x-small;
+font-weight: bold;
+}
+.auto-style2 {
+	border: 1px solid #808080;
+	background-color: #C0C0C0;
+}
+.auto-style3 {
+	border: 1px solid #808080;
+}
+.auto-style4 {
+	border: 1px solid #000000;
+}
+.auto-style5 {
+	font-weight: bold;
+	border: 1px solid #808080;
+	background-color: #C0C0C0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="bluehead"><span class="head1">CAN
+Driver&nbsp;for Linux</span><span class="head2"><br />
+	(c) 1997 - 2018 esd electronics gmbh<br />
+<br />
+<br />
+Release Notes</span>
+</div>
+
+<div style="text-align: right;"><span class="date">2018-10-12</span></div>
+
+<p>These are the release notes for the CAN driver core with the code name <em>esdcan</em>. 
+This driver core is the base of the 3.x drivers and will also be used for the 
+4.x drivers with CAN-FD support.</p>
+
+<span =""><span class="head1">Supported CAN
+hardware</span>
+<p>
+Several of our CAN interface devices are similar in their internal structure 
+and therefore constitute a CAN interface device family. For each interface 
+device family there is a different variant of 
+the <em>esdcan</em> driver that supports a whole interface device family and is 
+addressed by its 
+Driver Family Name. The
+following table gives an overview on how many and which different CAN devices 
+are supported by a single CAN family device driver. The module id name <em>card-id</em> 
+is typically derived from the name of the first member of a interface device 
+family.</p>
+<br />
+<table cellpadding="2" class="auto-style4" style="width: 100%">
+	<tr>
+		<td class="auto-style2" style="width: 149px">
+<span =""><strong class="auto-style5">Driver Family Name</strong></span></td>
+		<td class="auto-style5" style="width: 106px">Module Name <i>card-id</i></td>
+		<td class="auto-style5" style="width: 162px">
+<span ="">Supported
+CAN
+hardware</span></td>
+		<td class="auto-style5" style="width: 384px">
+		Latest release date</td>
+		<td class="auto-style5" style="width: 533px">
+		Latest release version</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">AMC4</td>
+		<td class="auto-style3" style="width: 106px">amc4</td>
+		<td class="auto-style3" style="width: 162px">AMC-CAN4</td>
+		<td class="auto-style3" style="width: 384px">2017-05-03</td>
+		<td class="auto-style3" style="width: 533px">3.10.3</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C200</td>
+		<td class="auto-style3" style="width: 106px">pci200</td>
+		<td class="auto-style3" style="width: 162px">
+<span ="">CAN-PCI/200<br />
+CAN-PCI/266<br />
+CPCI-CAN/200<br />
+CAN-PCIe/200<br />
+CAN-PCI104/200<br />
+PMC-CAN/266</span></td>
+		<td class="auto-style3" style="width: 384px">
+		2015-08-28</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C200i</td>
+		<td class="auto-style3" style="width: 106px">isa200</td>
+		<td class="auto-style3" style="width: 162px">CAN-ISA/200<br />
+		CAN-PC104/200 (SJA1000 Option)</td>
+		<td class="auto-style3" style="width: 384px">2015-08-28</td>
+		<td class="auto-style3" style="width: 533px">3.10.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C331</td>
+		<td class="auto-style3" style="width: 106px">pci331</td>
+		<td class="auto-style3" style="width: 162px">
+<span ="">CAN-PCI/331<br />
+CPCI-CAN/331<br />
+PMC-CAN/331<br />
+PMC-CAN/331/3.3</span></td>
+		<td class="auto-style3" style="width: 384px">
+		2015-08-28</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C331i</td>
+		<td class="auto-style3" style="width: 106px">isa331</td>
+		<td class="auto-style3" style="width: 162px">CAN-ISA/331<br />
+		CAN-PC104/331</td>
+		<td class="auto-style3" style="width: 384px">2015-08-28</td>
+		<td class="auto-style3" style="width: 533px">3.10.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C360</td>
+		<td class="auto-style3" style="width: 106px">pci360</td>
+		<td class="auto-style3" style="width: 162px">
+<span ="">CAN-PCI/360<br />
+CPCI-CAN/360</span></td>
+		<td class="auto-style3" style="width: 384px">
+		2015-08-28</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C400</td>
+		<td class="auto-style3" style="width: 106px">esdaccbm</td>
+		<td class="auto-style3" style="width: 162px">
+<span ="">CAN-PCI/400<br />
+CPCI-CAN/400<br />
+CAN-PCIe/400<br />
+PMC-CAN/400</span></td>
+		<td class="auto-style3" style="width: 384px">
+		2018-08-20</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.5</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C402</td>
+		<td class="auto-style3" style="width: 106px">pcie402</td>
+		<td class="auto-style3" style="width: 162px">CAN-PCI/402<br />
+		CAN-PCIe/402<br />
+
+<span ="">CAN-PCIeMini/402</span><br />
+		CPCIserial-CAN/402<br />
+		CPCI-CAN/402-4</td>
+		<td class="auto-style3" style="width: 384px">2018-09-10</td>
+		<td class="auto-style3" style="width: 533px">4.0.1</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">C405</td>
+		<td class="auto-style3" style="width: 106px">pci405</td>
+		<td class="auto-style3" style="width: 162px">
+<span ="">CAN-PCI/405<br />
+		CAN-PCI/405-B4</span></td>
+		<td class="auto-style3" style="width: 384px">
+		2018-08-20</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.2</td>
+	</tr>
+	<tr>
+		<td class="auto-style3" style="width: 149px">VCAN</td>
+		<td class="auto-style3" style="width: 106px">null</td>
+		<td class="auto-style3" style="width: 162px">
+		VIRTUAL</td>
+		<td class="auto-style3" style="width: 384px">
+		2018-08-20</td>
+		<td class="auto-style3" style="width: 533px">
+		3.10.2</td>
+	</tr>
+</table>
+<br />
+<br />
+<span class="head1">Supported Linux Kernel Versions</span><br />
+<p>
+The current <em>esdcan</em> driver releases support the 2.6.x family of Linux 
+kernels, the 3.x and the 4.x family of Linux kernels as well.
+The <em>esdcan</em> driver release archive still can be built for 2.4.x kernels (as of 
+March 2017) but this is only done on explicit customer request.
+</p>
+
+<span class="head1">State of Support of CAN-FD by different Driver Versions</span><br />
+<p>
+The CAN-FD frames have a data payload of up to 64 bytes. To transfer the bigger CAN-FD frames the
+<strong>NTCAN API</strong> had to be changed. The solution was to introduce a new structure <em>CMSG_X</em> and
+new functions that can handle the <em>CMSG_X</em> structures:
+</p>
+<ol>
+	<li>canSendX()</li>
+	<li>canTakeX()</li>
+	<li>canWriteX()</li>
+	<li>canReadX()</li>
+	<li>canGetOverlappedResultX()</li>
+</ol>
+<p>
+To handle the additional data bitrate also new functions to control the bitrate together with the 
+<em>NTCAN_BAUDRATE_X</em> structure have been implemented:
+</p>
+<ol>
+	<li>canSetBaudrateX()</li>
+	<li>canGetBaudrateX()</li>
+</ol>
+<p>
+Any <em>esdcan</em> driver release with with a version number &ge; 4.0.0 supports the new
+<strong>NTCAN API</strong> that can be used to transfer CAN-FD frames.
+The new <strong>NTCAN API</strong> is implemented in <strong>NTCAN</strong> library versions &ge; 4.2.0.
+</p>
+<p>
+Also <em>esdcan</em> drivers for CAN interface cards that are not CAN-FD capable will be migrated to 
+the new API to enable software tools to operate always with <em>CMSG_X</em> internally, even when 
+they talk to non CAN-FD interfaces.
+Any software that doesn't need to handle CAN-FD frames can still kling to the legacy interface using
+<em>CMSG</em> or <em>CMSG_T</em> structures to transfer Classic-CAN frames.
+</p>
+
+<span class="head1">Delivery Format of the Driver Archive</span><br />
+<br />
+Current releases of the driver are delivered per CAN driver family as gzipped 
+Tar archive (*.tgz).
+For kernels 2.6.x, 3.x and 4.x the archive name is constructed from the 
+following components<br />
+<ol>
+	<li>card-id: module id, e.g.: "pci200"</li>
+	<li>arch: host-architecture: "x86" or "x86_64"</li>
+	<li>ver: driver version, e.g.: "3.7.2"</li>
+</ol>
+using this pattern:
+esdcan-&lt;card-id&gt;-linux-&lt;arch&gt;-&lt;ver&gt;.tgz<br />
+<br />
+A valid example would be: esdcan-pci405-linux-x86_64-3.10.1.tgz<br />
+<br />
+
+<span class="head1">Installation</span><p>
+For detailed installation instructions refer to the "CAN-API, Part 2, 
+Installation Manual". Installation information can also be found in the README 
+file contained in the driver release archive.</p>
+
+<p class="head2">
+Hint<br />
+</p>
+<p>
+The <strong>NTCAN</strong> library supplied in the driver archive is built <strong>without</strong> the plugin interface.
+You only need a <strong>NTCAN</strong> library with plugin interface activated if you want to use the 
+<em>EtherCAN</em> driver plugin or the <em>SocketCAN</em> 
+wrapper library.
+</p>
+<!--
+<hr />
+<span class="ver">Timeline of releases and changes</span><br />
+/-->
+<hr />
+<p class="ver">Timeline of releases and changes</p>
+<p>
+Below follows a timeline of releases and changes of the <em>esdcan</em> driver 
+core. If you're looking for changes pertaining a certain driver family (e.g.: 
+<strong>C200</strong> or <strong>AMC4</strong>) 
+you may search for the Driver Family Name in this document to see when a release for this
+driver family was done and which changes are included. 
+</p>
+
+<hr />
+<p class="ver">2018-10-12: C402 version 4.0.1 for x86 and x86_64 release of updated FPGA firmware</p>
+
+<p>This is an update to the esdcan driver release for the C402 family. The driver itself is stays unchanged but the driver release 
+archive now contains new releases of the <em>updc402</em> and <em>updc402fd</em> tools that carry the FPGA version 0.71.
+</p>
+
+<p><strong>WARNING:</strong> Do <strong>NOT</strong> use the FPGA version 0.70 any more. If your board(s) have the FPGA version 0.70 
+	then in any case use the update tools to update your boards	to revision 0.71!
+</p>
+
+<ul>
+	<li><strong>C402:</strong><br />New <strong>ESDACC</strong> FPGA version 0.71 (00.47 hex). See changes below:
+	<ul>
+	<li>Fixed an error that was introduced with FPGA version 0.70. Due to an over-optimization in the PCIe endpoint 
+		of the FPGA it could occur with some mainboards that previously sent CAN frames could be sent instead of 
+		the intended data!</li>
+	</ul>
+	</li>
+</ul>
+
+<hr />
+<p class="ver">2018-09-10: C402 release 4.0.1 for x86 and x86_64</p>
+
+<p>This is the first release of a CAN-FD capable driver for the C402 family. All previous drivers could not transfer
+CAN-FD frames even if they could detect CAN-FD capable hardware boards. This is also the first release of the Linux
+driver that contains the <em>updc402fd</em> FPGA firmware updater to update the FPGA on CAN-FD capable boards.
+</p>
+<ul>
+	<li><strong>C402:</strong><br />
+	<ul>
+		<li>The <em>AUTOBAUD</em> feature has been enabled again for the CAN-FD capable driver. The <em>Measured AUTOBAUD</em>
+			feature is still disabled. The driver is working in table based AUTOBAUD mode at the moment where it probes
+			the baud rates from the table of recommended <strong>CiA</strong> baudrates whether any of them allows frame 
+			reception.</li>
+		<li>The bitrate indices 12 (for 12.5kBit) and 13 (for 10kBit) won't tune the bit rate of CAN-FD boards to the
+			selected bit rate. For non CAN-FD boards these settings still operate normal.</li>
+	</ul>
+	</li>
+	<li><strong>Common to all Linux implemetations:</strong><br />
+	<ul>
+		<li>Added missing support for <em>NTCAN_IOCTL_TX_OBJ_{CREATE|UPDATE}_X</em>.</li>
+		<li>Switched internal format of README to <em>reStructuredText</em> but still release it without the <em>*.rst</em> extension.</li>
+		</ul>
+	</li>
+</ul>
+
+<hr />
+<p class="ver">2018-09-05: NTCAN Library update 4.2.2</p>
+<p>This update provides the following new features and corrections:
+</p>
+<ul>
+	<li>Added in version 4.2.2 the missing NTCAN_IOCTL_TX_OBJ_{CREATE|UPDATE}_X support.</li>
+	<li>Fixed in version 4.2.1 the missing TDC support.</li>
+	<li>Since version 4.2.0 the <strong>NTCAN</strong> library supports the additional functions and declarations
+		to handle CAN-FD frames.</li>
+	<li>Since version 4.2.0 the <strong>NTCAN</strong> library uses a common <em>ntcan.h</em> header that is shared
+		between the implementations for Windows, Linux, QNX and VxWorks. Please use this common header now for your
+		projects.
+	</li>
+</ul>
+
+<hr />
+<p class="ver">2018-08-20: C402 release 3.10.7 for x86 and x86_64</p>
+<p class="ver">2018-08-20: C400 release 3.10.5 for x86 and x86_64</p>
+<p>For the boards of the C402 family it is strongly recommended to update the 
+FPGA firmware to the latest version by using <em>updpcie402</em> or <em>
+updpcie402fd</em>. The FPGA update for the AMC4 boards needs an updated HPM file 
+to be programmed via the standard IPMI tools into the AMC4 boards.</p>
+<ul>
+	<li><strong>AMC4, C400, C402:</strong><br />
+	<ul>
+	<li>Added support to count and indicate DMA stall situations supported in 
+	the FPGA firmware since 0.70 (00.46 hex).
+	<li>Added support to count IRQs and (spurious) DPCs.</li>
+    <li>Fixed regression for tools which use DEBUG IOCTLs on ESDACC boards
+
+<span ="">(i. e. the FPGA updater)</span>. The driver 
+	rejected the DEBUG IOCTLs.</li>
+	</ul>
+
+	<li><strong>C402:</strong>
+	<ul>
+		<li>Write host IRQ count back to FPGA also in case of MSI to prevent host being overrun (see Mantis #3163). </li>
+		<li>Small change to detect failing accesses in the FPGA memory space earlier 
+		in the driver initialisation sequence (boardrc_fpga_probe()).</li>
+	    </ul>
+    </li>
+	<li><strong>AMC4, C400, C402:</strong><br />Integrated <strong>ESDACC</strong> 
+	FPGA version 0.70 (00.46 hex). See changes below:
+	<ul>
+	<li>Fixed host fifo overrun protection in BM state machine.</li>
+	<li>Added BM info flags (host fifo full) for RX- &amp; TX-done, error and overrun messages.</li>
+	<li>C400, C402: Fixed hanging BM state machine in decoding interrupts.</li>
+	<li>C402: Added additional clear logic for internal avalon buffer FIFOs in reset path</li>
+	<li>Fixed Mantis issue #3163 by blocking the TX state machine, no new TX 
+	jobs are started when RX fifo is full, the last entry of RX fifo is reserved for a pending TX job in core.</li>
+	<li>Fixed internal modeReset handling. Changing the bitrate while sending should now bring state machine to idle and not lose TX-done.</li>
+	</ul>
+	</li>
+</ul>
+
+<p class="ver">2018-08-20: C405 release 3.10.2 for x86 and x86_64</p>
+<p class="ver">2017-08-20: VCAN release 3.10.2 for x86 and x86_64</p>
+<ul>
+	<li><strong>C405, VCAN:</strong><br />Driver update to include the latest adaptions of the driver's interface to the Linux kernel for compatiblity to recent (4.15+) kernels.
+	</li>
+</ul>
+
+<hr />
+<p class="ver">2018-07-26: NTCAN Library update 4.1.4</p>
+<p>This update provides the following new features:
+</p>
+<ul>
+	<li>Since version 4.1.4 the <strong>NTCAN</strong> library supports the "PeerPort" keyword for the EtherCAN plugin.
+	</li>
+	</ul>
+
+<hr />
+<p class="ver">2018-04-27 ... 2018-07-04: Several updates to the NTCAN Library</p>
+
+<p>The <strong>NTCAN</strong> library is a library that provides the <strong>
+NTCAN API</strong> to the user level program and translates the <strong>NTCAN 
+API</strong> calls into appropriate kernel calls destined to the CAN driver.
+The updated library has version numbers of 4.1.x and later.</p>
+<ul>
+	<li>The support for the <em>candev</em> driver (driver revisions 2.x) has now been deleted from the NTCAN
+	library. Library versions with <em>candev</em> driver support have
+	version numbers of 4.0.x and below.</li>
+	<li>The <strong>NTCAN</strong> library has been changed to avoid a race 
+	condition that could affect the internal handle management with a small 
+	likelyhood.
+	</li>
+	<li>Code changes due to new static code analysis tool.</li>
+	</ul>
+<hr />
+<p class="ver">2018-03-20: C402 beta release 3.10.6 for x86 and x86_64 
+(engineering release only)</p>
+
+<ul>
+	<li><strong>AMC4, C400, C402:</strong><br />
+	Fixed regression in control algorithm for local timestamps. This bug could lead to timestamps delivered by the NTCAN interface
+	that are not strictly increasing.
+	</li>
+
+	<li><strong>C400, C402:</strong><br />
+	Integrated <strong>ESDACC</strong> version 0.68 (00.44 hex). See changes below:
+	<ul>
+		<li>Fixed issue on Spartan 3e with hard sync compensation.</li>
+		<li>Added TX arm delay feature, to get a pci331 compatibility mode.</li>
+		<li>Fixed level triggered interrupts for C402.</li>
+		<li>Suppress statistic messages and interrupts of CAN cores not in use.</li>
+    	</ul>
+    </li>
+   	</ul>
+
+<p class="ver">2017-11-27: C402 beta release 3.10.5 for x86 and x86_64 
+(engineering release only)</p>
+<ul>
+      <li><strong>AMC4, C400, C402:</strong><br />
+      Minimize usage of DMA memory of <strong>ESDACC</strong> boards by allocating only the needed amount (64kB per board) at first 
+      and checking for a sufficient alignment. Only if this fails allocate a bigger memory chunk to be able to align it manually.
+	  </li>
+	  <li><strong>C400, C402:</strong><br />
+	  Integrated <strong>ESDACC</strong> version 0.66 (00.42 hex). Changes were 
+	  already described in a previous section.
+	  </li>
+      <li><strong>C402:</strong><br />
+      This is the first release of the Linux driver that recognizes the <strong>CAN-FD</strong> variants of the boards. But it is only possible to use them
+      in CAN-Classic mode.
+	  </li>
+	  <li><strong>C402:</strong><br />
+      The use of <strong>MSI</strong> interrupts may be disabled by adding a 0x40000000 flag to the "mode" module parameter.
+	  </li>
+      <li><strong>AMC4:</strong><br />
+      Enable the use of HW timers triggered by the FPGA on this board like on the other <strong>ESDACC</strong> boards.
+	  </li>
+      <li><strong>C200, C400, C402, C405:</strong><br />
+      Provide <em>udev</em> rules files that can be dropped into <em>/etc/udev/rules.d/</em> 
+	  which enable the automatic creation of the needed <em>/dev/can*</em>
+      inodes.
+	  </li>
+      <li><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405, VCAN:</strong><br />
+	  The driver now supports to be built with the Linux kernel version of 4.15-rc1 and later after a change in the Linux timer API.
+	  </li>
+      <li><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405, VCAN:</strong><br />
+	  From this point in time we will not provide a static <em>libntcan.a</em> library any more.
+	  </li>
+    </ul>
+<br />
+<hr />
+<p class="ver">2017-05-03: AMC4 release 3.10.3 for x86 and x86_64</p>
+<ul>
+      <li><strong>AMC4, C400:</strong><br />
+      Fix in interrupt handler that multiple boards could share part of their IRQ context (idxCoreIrq).
+	  You need multiple boards and a SMP machine to get any problems.</li>
+      <li><strong>AMC4:</strong><br />
+      Completely enabled Timestamped TX for this board because it is supported in the minimum 
+      FPGA version the driver demands on start (00.35 hex).
+	  </li>
+	  <li><strong>AMC4:</strong><br />
+	  Integrated <strong>ESDACC</strong> version 0.66 (00.42 hex). See changes 
+	  below:
+	  <ul>
+	  	<li>Fixed Mantis #2857: TX abort request while sending in an open bus 
+		could get stuck. This results in a 'hanging' driver on canClose().</li>
+	  </ul>
+	  </li>
+    </ul>
+<br />
+<hr />
+<p class="ver">2017-04-28: VCAN release 3.10.1 for x86 and x86_64</p>
+<ul>
+      <li><strong>AMC4:</strong><br />
+	  Fixed 
+	  internal configuration error that caused Timestamped TX not to be 
+	  completely enabled. Therefore NTCAN_IOCTL_SET_TX_TS_WIN did not work.</li>
+      <li><strong>VCAN:</strong><br />
+	  Added the <strong>VCAN</strong> driver to the supported devices. This driver adds a virtual 
+	  CAN device for testing without real hardware.</li>
+    </ul>
+<br />
+<hr />
+<p class="ver">2016-11-25: AMC4 release 3.10.2 for x86 and x86_64</p>
+<ul>
+      <li><strong>AMC4: <br />
+	  </strong>Integrated <strong>ESDACC</strong> version 0.63 (00.3F hex). See changes for
+	  <strong>C400</strong> release 3.10.4.</li>
+      <li>
+<span =""><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405:</strong></span><strong><br />
+	  </strong>Extended the NTCAN_INFO structure to return the number of open 
+	  handles.</li>
+      <li><strong>AMC4, C400, C402:</strong><br />
+	  Internal fix for non deferred messages to prevent choosing the 
+	  wrong Tx FIFO which results in a 'hanging' driver.</li>
+	  <li>
+<span =""><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405:</strong></span><br />
+	  Open handle failed if overlapped flag is set and platform is not Windows.</li>
+    </ul>
+<br />
+<hr />
+<p class="ver">2016-05-11: C402 release 3.10.4 for x86 and x86_64</p>
+<p class="ver">2016-05-10: C400 release 3.10.4 for x86 and x86_64</p>
+<ul>
+<li><strong>C400, C402:</strong><br />
+Integrated <strong>ESDACC</strong> version <span ="">0.63 (00.3F hex). See changes below:</span>
+	<ul>
+	<li>Fixed issue on Spartan 3e with hard sync compensation</li>
+		<li>Fixed reset on overload condition</li>
+		<li>Fixed busmaster DMA operation could not be disabled</li>
+		<li>Added BM Statistics feature and disable register for irq counter 
+		updates which reduces protocol overhead and improves performance 
+		(already <strong>ESDACC</strong> version 0.62).</li>
+	</ul>
+</li>
+<li><strong>C400, C402:</strong><br />
+Fix reported bitrate for ESDACC baudrates without CANIO_NO_IMPLICIT_CLK_DIV due 
+to an internal change.</li>
+	<li><strong>AMC4, C400, C402:</strong><br /> Fixed possible internal overload 
+	situation in situations of very high bus load ("Error no cm" messages in 
+	kernel log).</li>
+	<li><strong>AMC4, C400, C402:</strong><br />
+	Implemented functionality for BM statistics message on driver level with 
+	measured busload, controller state and timestamp.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2015-12-02: C402 release 3.10.3 for x86 and x86_64</p>
+<p class="ver">2015-12-02: C400 release 3.10.3 for x86 and x86_64</p>
+<ul>
+<li><strong>C400, C402:</strong><br />
+Integrated <strong>ESDACC</strong> version <span ="">0.61 (00.3D hex). See changes below:</span>
+	<ul>
+	<li>Got small changes to fix defects for timing corner cases found during 
+	the certification process. This version is now certified to conform to "ISO 
+	16845:2004".</li>
+	</ul>
+</li>
+<li><strong>C400, C402:</strong><br />
+Added support for NTCAN_RESET_CTRL_EC in library and driver.</li>
+	<li><strong>AMC4, C400, C402:<br />
+	</strong>Fixed negative bitcount in statistic at startup.</li>
+	<li>
+<span =""><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405:</strong></span><br />
+	Fixed hangup in canSend() when sending synchronous event. (tx.state update 
+	again regression of #2461).</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2015-08-28: Driver release 3.10.1+ for x86 and x86_64 all devices</p>
+<p >This is a full range of Linux driver and library releases to switch the 
+NTCAN library to version 4.x (libntcan.so.4). This
+            version of the library is binary incompatible with the
+            old version 3.x releases and requires recompilation of
+            all applications. The new NTCAN library version also introduces
+            symbol versioning.</p>
+<p >For a detailed explanation of the cause that made this binary incompatible 
+change neccessary please review the README file contained in the driver archive.</p>
+<p class="ver">2015-08-28: AMC4 release 3.10.1 for x86 and x86_64</p>
+<p class="ver">2015-08-28: C200 release 3.10.1 for x86 and x86_64</p>
+<p class="ver">2015-08-28: C200i release 3.10.1 for x86 and x86_64</p>
+<ul>
+<li>The x86_64 target architecture can't be tested due to lack of a 64-bit capable ISA system.</li>
+</ul>
+<p class="ver">2015-08-28: C331 release 3.10.1 for x86 and x86_64</p>
+<p class="ver">2015-08-28: C331i release 3.10.1 for x86 and x86_64</p>
+<ul>
+<li>The x86_64 target architecture can't be tested due to lack of a 64-bit capable ISA system.</li>
+</ul>
+<p class="ver">2015-08-28: C360 release 3.10.1 for x86 and x86_64</p>
+<p class="ver">2015-08-28: C400 release 3.10.1 for x86 and x86_64</p>
+<p class="ver">2015-08-28: C402 release 3.10.1 for x86 and x86_64</p>
+<ul>
+<li><strong>C400, C402:</strong><br />
+Integrated <strong>ESDACC</strong> version <span ="">0.58 (00.3A hex). See changes below:</span>
+	<ul>
+	<li>Got small changes to fix defects for timing corner cases found during 
+	the certification process.</li>
+	</ul>
+</li>
+</ul>
+<p class="ver">2015-08-28: C405 release 3.10.1 for x86 and x86_64</p>
+<ul>
+<li><strong>C405:<br />
+</strong>Fixed crash on enabled SmartDisconnect with PCI405 boards (OCB NULL pointer).</li>
+	<li><strong>C400, IRIG-B:</strong><br />
+	Fixed timestamp operation if IRIG-B enabled boards are operated together 
+	with non IRIG-B enabled boards (osif_div64_sft).</li>
+	<li><strong>C400, IRIG-B:</strong><br />
+	Added support for NTCAN_EV_IRIGB_1PPS in driver for PMC/CAN-400-IRIG boards.</li>
+	<li><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405:<br />
+	</strong>Changes to get the DPC kernel thread named like the loadable module 
+	is named (KBUILD_MODNAME).</li>
+	<li>
+<span =""><strong>AMC4, C200, C200i, C331, C331i, C360, C400, C402, C405:</strong></span><br />
+	Fixed the functions canIdRegionAdd() and canIdRegionDelete() if called with 
+	invalid parameters did not clear the count parameter.</li>
+	<li>
+	<strong>AMC4:</strong><br />
+	Change: The driver requires minimum FPGA revision of 00.35 HEX and uses the 
+	baud rate tables suited for the new prescaler layout.</li>
+	<li>
+	<strong>AMC4, C400, C402:<br />
+	</strong>Fixed timestamps of aborted TX frames.</li>
+	<li>
+	<strong>C400, C402:<br />
+	</strong>Change: Dynamically determine if feature error injection is 
+	present.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2015-01-13: C400 release 3.10.0 for x86 and x86_64</p>
+<p class="ver">2015-01-13: C402 release 3.10.0 for x86 and x86_64</p>
+<ul>
+<li><strong>C400, C402:</strong><br />
+Integrated <strong>ESDACC</strong> version <span ="">0.54 (00.36 hex). See changes below:</span>
+	<ul>
+	<li>This fixes the deadlock for reenabling bus-error IRQs (see Mantis #2481 
+	below) on FPGA level.</li>
+		<li>This fixes the possible transmission of an old CAN ID from the 
+		standard TX FIFO when a frame is waiting for transmission in the TS 
+		(Time Stamped) TX FIFO on FPGA level.</li>
+		<li>Removal of implicit clock divider in baud rate prescaler<span =""> 
+		(already <strong>ESDACC</strong> version 0.53).</span></li>
+		<li>Support for 1 PPS signal on CAN-PMC/400<span =""> (already <strong>ESDACC</strong> version 0.53).</span></li>
+	</ul>
+</li>
+<li><strong>C400, C402:</strong><br />
+Driver now requires minimum <strong>ESDACC</strong> version of 00.53 (00.35 
+HEX). It supports ESDACC versions without implicit clock divider in baud rate 
+prescaler.</li>
+	<li><strong>AMC4, C200, C331, C200i, C331i, C400, C402, C405:</strong><br />
+	Added IOCTL_ESDCAN_GET_INFO on driver level. This IOCTL is only accessible 
+	with NTCAN library 3.5.3 and later.</li>
+	<li><strong>C331, C331i, C402, C405:<br />
+	</strong>Fix to make firmware updater work again also with a board in the 
+	"Wrong firmware" state.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2014-10-31: AMC4 release 3.9.5 for x86 and x86_64</p>
+<p class="ver">2014-10-31: C400 release 3.9.83 for x86 and x86_64</p>
+<p class="ver">2014-10-31: C402 release 3.9.6 for x86 and x86_64</p>
+<ul>
+<li>
+<strong>AMC4, C400, C402:<br />
+</strong>Work around deadlock that occurs when enabling again bus-error IRQs 
+after IRQ throttle caused in error-passive state (see Mantis #2481).<br />
+This software work around will be removed when the <strong>ESDACC</strong> FPGA 
+is fixed.</li>
+	<li>
+<span =""><strong>AMC4, C200, C331, C200i, C331i, C400, C402, C405:</strong><br />
+</span>
+
+	Fix hang in canClose() after NTCAN_CONTROLLER_BUSY (see Mantis #2461) but 
+	breaks synchronous canSend() calls for events.</li>
+	<li>
+	<strong>AMC4, C400, C402:</strong><br />
+	Fix driver blocked on node lock polling for controller recovery after 
+	bus-off condition (see Mantis #2461) without correct bus termination.</li>
+	<li>
+	<strong>C402:</strong><br />
+	Fix in interrupt handler that multiple boards could share part of their IRQ 
+	context (idxCoreIrq).</li>
+	<li>
+	<strong>C331:</strong><br />
+	Code cleanup in IRQ reset support routine.</li>
+	<li>
+<span =""><strong>AMC4, C200, C331, C200i, C331i, C360, C400, C402, C405:</strong><br />
+	Support Linux kernel newer than 3.12.</span></li>
+</ul>
+<br />
+<hr />
+<p class="ver">2014-07-22: C400 release 3.9.82 for x86 and x86_64</p>
+<ul>
+	<li><strong>AMC4, C400, C402:</strong><br />
+	Fix problem in deferred TX.</li>
+	<li><strong>C200:</strong><br />
+	Internal code cleanup.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2014-07-10: C200i release 3.9.4 for x86 and x86_64</p>
+<p>This is the first release since version 3.8.7 of February 2009 and contains 
+all the changes and fixes accumulated since then.</p>
+<ul>
+	<li><strong>C405:<br />
+	</strong>Initial support for PPC405-GPr in common parts of driver.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2014-06-30: AMC4 release 3.9.4 for x86 and x86_64</p>
+<ul>
+	<li><strong>C360:<br />
+	</strong>Fix unwanted use of different TX queues in CPCI-CAN/360.</li>
+	<li><strong>C331:</strong><br />
+	Fix: Avoid PCI write buffer issue with IRQ reset (see Mantis #2329).</li>
+	<li><strong>AMC4, C400, C402:<br />
+	</strong>Fix: Force busmaster enable from Linux to override settings of a 
+	lazy&nbsp; (UEFI-)BIOS. Will work with a Linux kernel &gt;= 2.6.33. Blown up with a Linux kernel 3.11.</li>
+</ul>
+<br />
+<hr />
+<p class="ver">2014-02-04: C331 release 3.9.4 for x86 and x86_64</p>
+<p>This is the first release since version 3.9.3 of May 2012 and contains 
+all the changes and fixes accumulated since then.</p>
+<p class="ver">2014-02-03: C200 release 3.9.3 for x86 and x86_64</p>
+<p>This is the first release since version 3.9.2 of October 2011 and contains 
+all the changes and fixes accumulated since then.</p>
+<p class="ver">2014-02-03: C400 release 3.9.81 for x86 and x86_64</p>
+<p>This is the first release since version 3.9.75 of July 2013 and contains 
+all the changes and fixes accumulated since then.</p>
+<p class="ver">2014-02-03: C402 release 3.9.5 for x86 and x86_64</p>
+<p>This is the first release since version 3.9.4 of August 2013 and contains 
+all the changes and fixes accumulated since then.</p>
+
+<hr />
+<p>
+Releases before February 2013 are not documented here but can be found in the CHANGELOG
+file included in the driver's release archive.
+</p>
+</span>
+
+</body>
+
+</html>

@@ -184,7 +184,7 @@ modules {
 modules {
   name: "velodyne"
   process_conf {
-    process_cmd_keywords: "sensor_velodyne64_driver"
+    process_cmd_keywords: "sensor_velodyne32_driver"
   }
 }
 modules {

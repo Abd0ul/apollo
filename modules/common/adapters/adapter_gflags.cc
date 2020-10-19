@@ -37,15 +37,15 @@ DEFINE_string(pad_topic, "/apollo/control/pad",
 DEFINE_string(control_command_topic, "/apollo/control",
               "control command topic name");
 DEFINE_string(pointcloud_topic,
-              "/apollo/sensor/velodyne64/compensator/PointCloud2",
+              "/apollo/sensor/velodyne32/compensator/PointCloud2",
               "pointcloud topic name");
-DEFINE_string(pointcloud_raw_topic, "/apollo/sensor/velodyne64/PointCloud2",
+DEFINE_string(pointcloud_raw_topic, "/apollo/sensor/velodyne32/PointCloud2",
               "pointcloud raw topic name");
 DEFINE_string(velodyne_raw_topic,
-              "/apollo/sensor/velodyne64/VelodyneScanUnified",
+              "/apollo/sensor/velodyne32/VelodyneScanUnified",
               "velodyne64 raw data topic name");
 DEFINE_string(pointcloud_fusion_topic,
-              "/apollo/sensor/velodyne64/fusion/PointCloud2",
+              "/apollo/sensor/velodyne32/fusion/PointCloud2",
               "pointcloud fusion topic name");
 DEFINE_string(vlp16_pointcloud_topic,
               "/apollo/sensor/velodyne16/compensator/PointCloud2",

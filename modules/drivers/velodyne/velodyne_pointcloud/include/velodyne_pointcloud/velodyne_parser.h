@@ -104,6 +104,13 @@ static const uint16_t LOWER_BANK = 0xddff;
 
 static const float ANGULAR_RESOLUTION = 0.00300919;
 
+/**
+ * some defines for VLP32C
+ */
+static const float VLP32_DISTANCE_RESOLUTION   =    0.004f;  // [m]
+static const float VLP32_CHANNEL_TDURATION  =   2.304f;   // [µs] Channels corresponds to one laser firing
+static const float VLP32_SEQ_TDURATION      =  55.296f;   // [µs] Sequence is a set of laser firings including recharging
+
 /** Special Defines for VLP16 support **/
 static const int VLP16_FIRINGS_PER_BLOCK = 2;
 static const int VLP16_SCANS_PER_FIRING = 16;
@@ -299,6 +306,7 @@ class Velodyne32Parser : public VelodyneParser {
   double get_timestamp(double base_time, float time_offset,
                        uint16_t laser_block_id);
   void unpack(const velodyne_msgs::VelodynePacket &pkt, VPointCloud &pc);
+  void unpackVLP32C(const velodyne_msgs::VelodynePacket &pkt, VPointCloud &pc);
   // Previous Velodyne packet time stamp. (offset to the top hour)
   double previous_packet_stamp_;
   uint64_t gps_base_usec_;  // full time

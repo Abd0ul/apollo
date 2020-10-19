@@ -20,7 +20,7 @@ data_files {
 }
 data_files {
   source_path: "start_velodyne.launch"
-  dest_path: "<ros>/share/velodyne/launch/start_velodyne.launch"
+  dest_path: "<ros>/share/velodyne/launch/start_velodyne_vlp32c.launch"
 }
 data_files {
   source_path: "velodyne_check.launch"

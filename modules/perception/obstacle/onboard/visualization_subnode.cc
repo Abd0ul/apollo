@@ -324,7 +324,7 @@ void VisualizationSubnode::SetFusionContent(const std::string& data_key,
     std::string trigger_device_id = fusion_item->fused_sensor_device_id;
     double trigger_ts = fusion_item->fused_sensor_ts;
     std::string data_key_sensor;
-    if (trigger_device_id == "velodyne64") {
+    if (trigger_device_id == "velodyne32") {
       SubnodeHelper::ProduceSharedDataKey(trigger_ts, trigger_device_id,
                                           &data_key_sensor);
       SetLidarContent(data_key_sensor, content, timestamp);
@@ -349,7 +349,7 @@ void VisualizationSubnode::SetFusionContent(const std::string& data_key,
       AINFO << "trigger device id " << trigger_device_id;
       AINFO << "data key sensor " << data_key_sensor;
 
-      if (trigger_device_id == "velodyne_64") {
+      if (trigger_device_id == "velodyne_32") {
         AINFO << "set lidar content";
         SubnodeHelper::ProduceSharedDataKey(trigger_ts, trigger_device_id,
                                             &data_key_sensor);

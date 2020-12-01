@@ -36,8 +36,8 @@ namespace perception {
 TEST(PbfTrackTest, test_pbf_track_constructor) {
   DSTInitiator::instance().initialize_bba_manager();
   std::shared_ptr<PbfSensorObject> object1(new PbfSensorObject());
-  object1->sensor_type = SensorType::VELODYNE_64;
-  object1->sensor_id = "velodyne_64";
+  object1->sensor_type = SensorType::VELODYNE_32;
+  object1->sensor_id = "velodyne_32";
   object1->timestamp = 0.1;
   object1->object->track_id = 1;
   std::shared_ptr<PbfSensorObject> object2(new PbfSensorObject());
@@ -59,8 +59,8 @@ TEST(PbfTrackTest, test_pbf_track_constructor) {
 TEST(PbfTrackTest, test_pbf_get_object) {
   DSTInitiator::instance().initialize_bba_manager();
   std::shared_ptr<PbfSensorObject> object1(new PbfSensorObject());
-  object1->sensor_type = SensorType::VELODYNE_64;
-  object1->sensor_id = "velodyne_64";
+  object1->sensor_type = SensorType::VELODYNE_32;
+  object1->sensor_id = "velodyne_32";
   object1->timestamp = 0.1;
   object1->object->track_id = 1;
   PbfTrack track(object1);
@@ -70,12 +70,12 @@ TEST(PbfTrackTest, test_pbf_get_object) {
   object2->timestamp = 0.09;
   object2->object->track_id = 1;
   track.radar_objects_[object2->sensor_id] = object2;
-  CHECK_EQ(nullptr != track.GetLidarObject("velodyne_64"), true);
+  CHECK_EQ(nullptr != track.GetLidarObject("velodyne_32"), true);
   CHECK_EQ(nullptr != track.GetRadarObject("radar"), true);
 
   std::shared_ptr<PbfSensorObject> object4(new PbfSensorObject());
-  object4->sensor_type = SensorType::VELODYNE_64;
-  object4->sensor_id = "velodyne_64_1";
+  object4->sensor_type = SensorType::VELODYNE_32;
+  object4->sensor_id = "velodyne_32_1";
   object4->timestamp = 0.2;
   object4->object->track_id = 1;
   track.lidar_objects_[object4->sensor_id] = object4;
@@ -94,41 +94,41 @@ TEST(PbfTrackTest, test_pbf_get_object) {
 TEST(PbfTrackTest, test_pbf_update_measurements_life) {
   DSTInitiator::instance().initialize_bba_manager();
   std::shared_ptr<PbfSensorObject> object1(new PbfSensorObject());
-  object1->sensor_type = SensorType::VELODYNE_64;
-  object1->sensor_id = "velodyne_64";
+  object1->sensor_type = SensorType::VELODYNE_32;
+  object1->sensor_id = "velodyne_32";
   object1->timestamp = 0.1;
   object1->object->track_id = 1;
   object1->invisible_period = 0.0;
   PbfTrack track(object1);
   std::shared_ptr<PbfSensorObject> object2(new PbfSensorObject());
-  object2->sensor_type = SensorType::VELODYNE_64;
-  object2->sensor_id = "velodyne_64_1";
+  object2->sensor_type = SensorType::VELODYNE_32;
+  object2->sensor_id = "velodyne_32_1";
   object2->timestamp = 0.1;
   object2->object->track_id = 1;
   track.lidar_objects_[object2->sensor_id] = object2;
   track.UpdateMeasurementsLifeWithMeasurement(&(track.lidar_objects_),
-                                              "velodyne_64", 0.45, 0.2);
+                                              "velodyne_32", 0.45, 0.2);
   CHECK_EQ(track.lidar_objects_.size(), 1);
   track.UpdateMeasurementsLifeWithMeasurement(&(track.lidar_objects_),
-                                              "velodyne_64_1", 0.25, 0.2);
+                                              "velodyne_32_1", 0.25, 0.2);
   CHECK_EQ(track.lidar_objects_.size(), 1);
   std::shared_ptr<PbfSensorObject> object3(new PbfSensorObject());
-  object3->sensor_type = SensorType::VELODYNE_64;
-  object3->sensor_id = "velodyne_64_2";
+  object3->sensor_type = SensorType::VELODYNE_32;
+  object3->sensor_id = "velodyne_32_2";
   object3->timestamp = 0.2;
   object3->object->track_id = 1;
   track.lidar_objects_[object3->sensor_id] = object3;
   bool invisible_state = true;
   track.UpdateMeasurementsLifeWithoutMeasurement(
-      (&track.lidar_objects_), "velodyne_64", 0.35, 0.2, &invisible_state);
+      (&track.lidar_objects_), "velodyne_32", 0.35, 0.2, &invisible_state);
   CHECK_EQ(track.lidar_objects_.size(), 1);
   CHECK_EQ(invisible_state, false);
 }
 
 std::shared_ptr<PbfSensorObject> GenerateVelObject(double timestamp) {
   std::shared_ptr<PbfSensorObject> object1(new PbfSensorObject());
-  object1->sensor_type = SensorType::VELODYNE_64;
-  object1->sensor_id = "velodyne_64";
+  object1->sensor_type = SensorType::VELODYNE_32;
+  object1->sensor_id = "velodyne_32";
   object1->timestamp = timestamp;
   object1->object->track_id = 1;
   object1->object->type_probs[static_cast<int>(ObjectType::PEDESTRIAN)] = 1.0f;

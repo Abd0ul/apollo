@@ -6,12 +6,12 @@ cc_library(
     name = "data_generator_lib",
     srcs = [
         "data_generator.cc",
-        "velodyne64.cc",
+        "velodyne32.cc",
     ],
     hdrs = [
         "data_generator.h",
         "sensor.h",
-        "velodyne64.h",
+        "velodyne32.h",
     ],
     copts = [
         "-Wno-deprecated",

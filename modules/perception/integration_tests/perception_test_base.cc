@@ -63,7 +63,7 @@ void PerceptionTestBase::SetUpTestCase() {
   FLAGS_obstacle_module_name = "perception_obstacle";
   FLAGS_tf2_buff_in_ms = 20;
   FLAGS_lidar_tf2_frame_id = "novatel";
-  FLAGS_lidar_tf2_child_frame_id = "velodyne64";
+  FLAGS_lidar_tf2_child_frame_id = "velodyne32";
   FLAGS_enable_visualization = false;
   FLAGS_onboard_radar_detector = "ModestRadarDetector";
   FLAGS_front_radar_forward_distance = 100;

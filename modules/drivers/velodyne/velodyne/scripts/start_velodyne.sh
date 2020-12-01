@@ -31,10 +31,10 @@ if  pidof -o %PPID -x "roscore" > /dev/null; then
     rosnode kill /velodyne32_compensator
   fi
 
-  if rosnode list |grep velodyne32_nodelet_manager > /dev/null; then
-    rosnode kill /velodyne32_nodelet_manager
+  if rosnode list |grep velodyne_nodelet_manager > /dev/null; then
+    rosnode kill /velodyne_nodelet_manager
   fi
 
 fi
 
-roslaunch velodyne start_velodyne.launch
+roslaunch velodyne start_velodyne_vlp32c.launch

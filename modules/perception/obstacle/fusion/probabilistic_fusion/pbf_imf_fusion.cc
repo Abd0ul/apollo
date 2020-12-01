@@ -159,7 +159,7 @@ void PbfIMFFusion::UpdateWithObject(
     }
     sensor_processor_noise = &(RadarFrameSupplement::state_vars.process_noise);
     sensor_transition_matrix = &(RadarFrameSupplement::state_vars.trans_matrix);
-  } else if (new_object->sensor_type == SensorType::VELODYNE_64) {
+  } else if (new_object->sensor_type == SensorType::VELODYNE_32) {
     belief_anchor_point_ = new_object->object->center;
     belief_velocity_ = new_object->object->velocity;
     if (!LidarFrameSupplement::state_vars.initialized_) {
@@ -394,7 +394,7 @@ void PbfIMFFusion::RemoveOutdatedSensorObjects(const double timestamp) {
   for (; it != cached_sensor_objects_.end(); ++it) {
     double time_invisible = 0.0;
 
-    if (it->first == SensorType::VELODYNE_64) {
+    if (it->first == SensorType::VELODYNE_32) {
       time_invisible = PbfTrack::GetMaxLidarInvisiblePeriod();
     } else if (it->first == SensorType::RADAR) {
       time_invisible = PbfTrack::GetMaxRadarInvisiblePeriod();

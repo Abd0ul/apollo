@@ -69,7 +69,7 @@ bool ProbabilisticFusion::Init() {
 
   // publish driven
   publish_sensor_id_ = FLAGS_fusion_publish_sensor_id;
-  if (publish_sensor_id_ != "velodyne_64" && publish_sensor_id_ != "radar" &&
+  if (publish_sensor_id_ != "velodyne_32" && publish_sensor_id_ != "radar" &&
       publish_sensor_id_ != "camera") {
     AERROR << "Invalid publish_sensor value: " << publish_sensor_id_;
   }
@@ -146,7 +146,7 @@ bool ProbabilisticFusion::Fuse(
     fusion_mutex_.lock();
     // 3.peform fusion on related frames
     for (size_t i = 0; i < frames.size(); ++i) {
-      if (frames[i]->sensor_id == "velodyne_64") {
+      if (frames[i]->sensor_id == "velodyne_32") {
         options->fused_frame_ts.insert(options->fused_frame_ts.begin(),
                                        frames[i]->timestamp);
         options->fused_frame_device_id.insert(

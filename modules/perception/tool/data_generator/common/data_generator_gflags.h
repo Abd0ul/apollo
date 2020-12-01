@@ -27,6 +27,6 @@ DECLARE_string(data_file_name);
 
 // frame names
 DECLARE_string(novatel_frame_name);
-DECLARE_string(velodyne64_frame_name);
+DECLARE_string(velodyne32_frame_name);
 
 #endif  // MODULES_TOOL_DATA_GENERATOR_COMMON_DATA_GENERATOR_GFLAGS_H

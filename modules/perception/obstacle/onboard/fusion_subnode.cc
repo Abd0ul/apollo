@@ -273,7 +273,7 @@ Status FusionSubnode::Process(const EventMeta &event_meta,
       if (obj.sensor_type == SensorType::CAMERA) {
         cipv_.DetermineCipv(lane_objects_, cipv_options, &objects_);
         camera_timestamp_ = obj.timestamp;
-      } else if (obj.sensor_type == SensorType::VELODYNE_64) {
+      } else if (obj.sensor_type == SensorType::VELODYNE_32) {
         lidar_timestamp_ = obj.timestamp;
       } else if (obj.sensor_type == SensorType::RADAR) {
         radar_timestamp_ = obj.timestamp;
@@ -379,7 +379,7 @@ bool FusionSubnode::BuildSensorObjs(
     // Make sure timestamp and type are filled.
     sensor_objects->timestamp = event.timestamp;
     if (event.event_id == lidar_event_id_) {
-      sensor_objects->sensor_type = SensorType::VELODYNE_64;
+      sensor_objects->sensor_type = SensorType::VELODYNE_32;
     } else if (event.event_id == radar_event_id_) {
       sensor_objects->sensor_type = SensorType::RADAR;
     } else if (event.event_id == camera_event_id_) {

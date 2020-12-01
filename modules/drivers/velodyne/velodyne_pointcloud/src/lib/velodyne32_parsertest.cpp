@@ -46,21 +46,29 @@ void Velodyne32Parser::generate_pointcloud(
   if (config_.model == "VLP32C") {
     for (size_t i = 0; i < scan_msg->packets.size(); ++i) {
       unpackVLP32C(scan_msg->packets[i], *out_msg);
-      last_time_stamp_ = out_msg->header.stamp;
     }
   } else {
     for (size_t i = 0; i < scan_msg->packets.size(); ++i) {
       unpack(scan_msg->packets[i], *out_msg);
-      last_time_stamp_ = out_msg->header.stamp;
-      ROS_DEBUG_STREAM("stamp: " << std::fixed << out_msg->header.stamp);
     }
   }
-
-  if (out_msg->empty()) {
+  // set measurement and lidar_timestampe
+  int size = out_msg->point_size();
+  if (size == 0) {
     // we discard this pointcloud if empty
     ROS_ERROR_STREAM(
         "All points is NAN!Please check velodyne:" << config_.model);
+  } else {
+    // take the last point's timestamp as the whole frame's measurement time.
+    uint64_t timestamp = out_msg->point(size - 1).timestamp();
+    out_msg->set_measurement_time(static_cast<double>(timestamp) / 1e9);
+    out_msg->mutable_header()->set_lidar_timestamp(timestamp);
   }
+
+  // set default width
+  out_msg->set_width(out_msg->point_size());
+
+  last_time_stamp_ = out_msg->measurement_time();
 }
 
 double Velodyne32Parser::get_timestamp(double base_time, float time_offset,
@@ -69,15 +77,39 @@ double Velodyne32Parser::get_timestamp(double base_time, float time_offset,
   if (config_.model == "VLP32C") {
     t = base_time + time_offset;
   }
-  double timestamp = get_gps_stamp(t, previous_packet_stamp_, gps_base_usec_);
-  return timestamp;
+// Now t is the exact laser firing time for a specific data point.
+  if (t < previous_firing_stamp_) {
+    // plus 3600 when large jump back, discard little jump back for wrong time
+    // in lidar
+    if (std::abs(previous_firing_stamp_ - t) > 3599000000) {
+      gps_base_usec_ += static_cast<uint64_t>(3600 * 1e6);
+      AINFO << "Base time plus 3600s. Model: " << config_.model() << std::fixed
+            << ". current:" << t << ", last time:" << previous_firing_stamp_;
+    } else if (config_.model() != VLP32C ||
+               (previous_firing_stamp_ - t > 34.560f) ||
+               (previous_firing_stamp_ - t < 34.559f)) {
+      AWARN << "Current stamp:" << std::fixed << t
+            << " less than previous stamp:" << previous_firing_stamp_
+            << ". GPS time stamp maybe incorrect!";
+    }
+  } else if (previous_firing_stamp_ != 0 &&
+             t - previous_firing_stamp_ > 100000) {  // 100ms
+    AERROR << "Current stamp:" << std::fixed << t
+           << " ahead previous stamp:" << previous_firing_stamp_
+           << " over 100ms. GPS time stamp incorrect!";
+  }
+
+  previous_firing_stamp_ = t;
+  // in nano seconds
+  uint64_t gps_stamp = gps_base_usec_ * 1000 + static_cast<uint64_t>(t * 1000);
+
+  return gps_stamp;
 }
 
 void Velodyne32Parser::unpack(const velodyne_msgs::VelodynePacket& pkt,
                               VPointCloud& pc) {
   const RawPacket* raw = (const RawPacket*)&pkt.data[0];
   double basetime = raw->gps_timestamp;  // usec
-  //double basetime = (pkt.stamp.toSec() - gps_base_usec_/1e6)*1e6;
 
   for (int i = 0; i < BLOCKS_PER_PACKET; i++) {  // 12
     for (int laser_id = 0, k = 0; laser_id < SCANS_PER_BLOCK;
@@ -127,7 +159,12 @@ void Velodyne32Parser::unpackVLP32C(const velodyne_msgs::VelodynePacket& pkt,
                                     VPointCloud& pc) {
   const RawPacket* raw = (const RawPacket*)&pkt.data[0];
   // const RawPacket* raw = (const RawPacket*)pkt.data().c_str();
-  double basetime = raw->gps_timestamp;  // usec
+  // This is the packet timestamp which marks the moment of the first data point
+  // in the first firing sequence of the first data block. The time stamp’s
+  // value is the number of microseconds elapsed since the top of the hour. The
+  // number ranges from 0 to 3,599,999,999, the number of microseconds in one
+  // hour (Sec. 9.3.1.6 in VLP-32C User Manual).
+  double basetime = static_cast<double>(raw->gps_timestamp);  // usec 
   float azimuth = 0.0f;
   float azimuth_diff = 0.0f;
   float last_azimuth_diff = 0.0f;
@@ -153,14 +190,10 @@ void Velodyne32Parser::unpackVLP32C(const velodyne_msgs::VelodynePacket& pkt,
       raw_distance.bytes[0] = raw->blocks[block].data[k];
       raw_distance.bytes[1] = raw->blocks[block].data[k + 1];
 
-      // compute time
-      uint64_t timestamp = static_cast<uint64_t>(get_timestamp(
-          basetime, (*inner_time_)[block][laser_id], static_cast<uint16_t>(block)));
-
-      if (laser_id == SCANS_PER_BLOCK - 1) {
-        // set header stamp before organize the point cloud
-        pc.header.stamp = static_cast<double>(timestamp) / 1e9;
-      }
+      // compute the actual timestamp associated with the data point at data
+      // block i and laser_id
+      uint64_t timestamp = GetTimestamp(basetime, (*inner_time_)[i][laser_id],
+                                        static_cast<uint16_t>(i));      
 
       azimuth_corrected_f =
           azimuth + (azimuth_diff * (static_cast<float>(laser_id) / 2.0f) *
@@ -201,7 +234,7 @@ void Velodyne32Parser::order(VPointCloud::Ptr& cloud) {
   }
   int width = 32;
   cloud->width = width;
-  cloud->height = cloud->size() / cloud->width;
+  cloud->height = cloud->point_size() / cloud->width;
   int height = cloud->height;
 
   VPointCloud target;

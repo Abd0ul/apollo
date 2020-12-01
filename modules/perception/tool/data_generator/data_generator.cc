@@ -24,7 +24,7 @@
 #include "modules/common/log.h"
 #include "modules/common/vehicle_state/vehicle_state_provider.h"
 #include "modules/perception/tool/data_generator/common/data_generator_gflags.h"
-#include "modules/perception/tool/data_generator/velodyne64.h"
+#include "modules/perception/tool/data_generator/velodyne32.h"
 
 namespace apollo {
 namespace perception {
@@ -67,9 +67,9 @@ Status DataGenerator::Init() {
 }
 
 void DataGenerator::RegisterSensors() {
-  sensor_factory_.Register(SensorConfig::VELODYNE64,
+  sensor_factory_.Register(SensorConfig::VELODYNE32,
                            [](const SensorConfig& config) -> Sensor* {
-                             return new Velodyne64(config);
+                             return new Velodyne32(config);
                            });
 }
 

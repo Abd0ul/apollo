@@ -18,7 +18,7 @@
  * @file
  **/
 
-#include "modules/perception/tool/data_generator/velodyne64.h"
+#include "modules/perception/tool/data_generator/velodyne32.h"
 
 #include <cmath>
 
@@ -38,7 +38,7 @@ using apollo::perception::pcl_util::PointXYZIT;
 using Eigen::Affine3d;
 using Eigen::Matrix4d;
 
-bool Velodyne64::Process() {
+bool Velodyne32::Process() {
   const auto& point_cloud_msg =
       AdapterManager::GetPointCloud()->GetLatestObserved();
   ADEBUG << "PointCloud: " << point_cloud_msg.header;
@@ -46,7 +46,7 @@ bool Velodyne64::Process() {
   return true;
 }
 
-bool Velodyne64::ProcessPointCloudData(
+bool Velodyne32::ProcessPointCloudData(
     const sensor_msgs::PointCloud2& message) {
   PointCloudPtr cld(new PointCloud);
   TransPointCloudMsgToPCL(message, &cld);
@@ -54,10 +54,10 @@ bool Velodyne64::ProcessPointCloudData(
 
   std::shared_ptr<Matrix4d> velodyne_to_novatel_trans =
       std::make_shared<Matrix4d>();
-  if (!GetTrans(FLAGS_novatel_frame_name, FLAGS_velodyne64_frame_name,
+  if (!GetTrans(FLAGS_novatel_frame_name, FLAGS_velodyne32_frame_name,
                 message.header.stamp.toSec(),
                 velodyne_to_novatel_trans.get())) {
-    AERROR << "Fail to transform velodyne64 to novatel at time: "
+    AERROR << "Fail to transform velodyne32 to novatel at time: "
            << message.header.stamp.toSec();
     return false;
   }
@@ -77,7 +77,7 @@ bool Velodyne64::ProcessPointCloudData(
   return true;
 }
 
-void Velodyne64::TransPointCloudMsgToPCL(
+void Velodyne32::TransPointCloudMsgToPCL(
     const sensor_msgs::PointCloud2& cloud_msg, PointCloudPtr* cloud_pcl) {
   // transform from ros to pcl
   pcl::PointCloud<pcl_util::PointXYZIT> in_cloud;
@@ -106,7 +106,7 @@ void Velodyne64::TransPointCloudMsgToPCL(
   cloud->points.resize(points_num);
 }
 
-bool Velodyne64::GetTrans(const std::string& to_frame,
+bool Velodyne32::GetTrans(const std::string& to_frame,
                           const std::string& from_frame,
                           const double query_time, Matrix4d* trans) {
   CHECK_NOTNULL(trans);
@@ -138,7 +138,7 @@ bool Velodyne64::GetTrans(const std::string& to_frame,
   return true;
 }
 
-bool Velodyne64::TransformPointCloudToWorld(
+bool Velodyne32::TransformPointCloudToWorld(
     std::shared_ptr<Matrix4d> velodyne_trans, PointCloudPtr* cld) {
   Affine3d affine_3d_trans(*velodyne_trans);
   for (size_t i = 0; i < (*cld)->points.size(); ++i) {

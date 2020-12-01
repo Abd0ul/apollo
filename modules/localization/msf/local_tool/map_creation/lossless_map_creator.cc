@@ -25,7 +25,7 @@
 #include "modules/localization/msf/local_map/lossless_map/lossless_map.h"
 #include "modules/localization/msf/local_map/lossless_map/lossless_map_pool.h"
 
-const unsigned int CAR_SENSOR_LASER_NUMBER = 64;
+const unsigned int CAR_SENSOR_LASER_NUMBER = 32; //64;
 
 using apollo::localization::msf::FeatureXYPlane;
 using apollo::localization::msf::LosslessMap;

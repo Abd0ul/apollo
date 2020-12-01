@@ -43,10 +43,10 @@ namespace apollo {
 namespace perception {
 namespace data_generator {
 
-class Velodyne64 : public Sensor {
+class Velodyne32 : public Sensor {
  public:
-  explicit Velodyne64(const SensorConfig& config) : Sensor(config) {}
-  virtual ~Velodyne64() = default;
+  explicit Velodyne32(const SensorConfig& config) : Sensor(config) {}
+  virtual ~Velodyne32() = default;
   bool Process() override;
 
  private:

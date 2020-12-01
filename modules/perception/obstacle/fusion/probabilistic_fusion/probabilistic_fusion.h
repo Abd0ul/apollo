@@ -92,7 +92,7 @@ class ProbabilisticFusion : public BaseFusion {
  protected:
   /**@brief produce fusion result for PNC only when fusing sensor with
    * publish_sensor_id_*/
-  std::string publish_sensor_id_ = "velodyne_64";
+  std::string publish_sensor_id_ = "velodyne_32";
   bool started_ = false;
   PbfBaseTrackObjectMatcher *matcher_ = nullptr;
   PbfSensorManager *sensor_manager_ = nullptr;

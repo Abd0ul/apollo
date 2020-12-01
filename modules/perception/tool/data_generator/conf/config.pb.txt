@@ -60,7 +60,7 @@ obstacle : {
   type: SEDAN
 }
 config : {
-  id: VELODYNE64
-  sensor_frame_name: "velodyne64"
+  id: VELODYNE32
+  sensor_frame_name: "velodyne32"
 }
 

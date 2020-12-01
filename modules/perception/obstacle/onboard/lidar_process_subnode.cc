@@ -439,7 +439,7 @@ void LidarProcessSubnode::PublishDataAndEvent(
   }
 }
 SensorType Lidar64ProcessSubnode::GetSensorType() const {
-  return SensorType::VELODYNE_64;
+  return SensorType::VELODYNE_32;
 }
 
 void Lidar64ProcessSubnode::AddMessageCallback() {

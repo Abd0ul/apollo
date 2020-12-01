@@ -10,7 +10,7 @@ transform:
     y: -0.009506024591691139
     z: 0.6950375602267317
     w: 0.7187375608679442
-child_frame_id: velodyne64
+child_frame_id: velodyne32
 header:
   stamp:
     nsecs: 659511381

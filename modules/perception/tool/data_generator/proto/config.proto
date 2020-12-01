@@ -38,7 +38,7 @@ message ROI {
 
 message SensorConfig {
   enum SensorId {
-    VELODYNE64 = 1;
+    VELODYNE32 = 1;
     VELODYNE16 = 2;
     CONTI_RADAR = 3;
   }

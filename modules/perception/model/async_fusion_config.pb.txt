@@ -8,6 +8,6 @@ max_radar_confident_angle: 30
 min_radar_confident_distance: 40
 publish_if_has_lidar: true
 publish_if_has_radar: true
-publish_sensor: "velodyne_64"
+publish_sensor: "velodyne_32"
 use_radar: true
 use_lidar: true

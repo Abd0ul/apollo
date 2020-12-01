@@ -169,7 +169,7 @@ class NovatelParser : public Parser {
 
   size_t total_length_ = 0;
 
-  config::ImuType imu_type_ = config::ImuType::ADIS16488;
+  config::ImuType imu_type_ = config::ImuType::G320N;
 
   // -1 is an unused value.
   novatel::SolutionStatus solution_status_ =
@@ -782,7 +782,7 @@ bool NovatelParser::HandleRawImu(const novatel::RawImu* imu) {
     novatel::ImuParameter param = novatel::GetImuParameter(imu_type_);
 
     if (is_zero(param.sampling_rate_hz)) {
-      AERROR_EVERY(5) << "Unsupported IMU type ADUS16488.";
+      AERROR_EVERY(5) << "Unsupported IMU type G320N.";
       return false;
     }
     gyro_scale = param.gyro_scale * param.sampling_rate_hz;

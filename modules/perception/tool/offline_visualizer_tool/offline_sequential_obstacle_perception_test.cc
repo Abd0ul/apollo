@@ -173,7 +173,7 @@ class SequentialPerceptionTest {
         dynamic_cast<VelodyneRawFrame*>(frame->get());
     velodyne_frame->timestamp_ = timestamp;
     velodyne_frame->pose_ = pose;
-    velodyne_frame->sensor_type_ = SensorType::VELODYNE_64;
+    velodyne_frame->sensor_type_ = SensorType::VELODYNE_32;
     velodyne_frame->cloud_ = cloud;
     return true;
   }

@@ -43,7 +43,7 @@ DEFINE_string(pointcloud_raw_topic, "/apollo/sensor/velodyne32/PointCloud2",
               "pointcloud raw topic name");
 DEFINE_string(velodyne_raw_topic,
               "/apollo/sensor/velodyne32/VelodyneScanUnified",
-              "velodyne64 raw data topic name");
+              "velodyne32 raw data topic name");
 DEFINE_string(pointcloud_fusion_topic,
               "/apollo/sensor/velodyne32/fusion/PointCloud2",
               "pointcloud fusion topic name");

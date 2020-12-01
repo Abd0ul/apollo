@@ -47,7 +47,7 @@ enum InternalObjectType {
 };
 
 enum SensorType {
-  VELODYNE_64 = 0,
+  VELODYNE_32 = 0,
   VELODYNE_16 = 1,
   RADAR = 2,
   CAMERA = 3,

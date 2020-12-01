@@ -49,8 +49,8 @@ std::string GetObjectName(const ObjectType& obj_type) {
 
 std::string GetSensorType(SensorType sensor_type) {
   switch (sensor_type) {
-    case SensorType::VELODYNE_64:
-      return "velodyne_64";
+    case SensorType::VELODYNE_32:
+      return "velodyne_32";
     case SensorType::VELODYNE_16:
       return "velodyne_16";
     case SensorType::RADAR:
@@ -66,7 +66,7 @@ std::string GetSensorType(SensorType sensor_type) {
 }
 
 bool is_lidar(SensorType sensor_type) {
-  return (sensor_type == SensorType::VELODYNE_64);
+  return (sensor_type == SensorType::VELODYNE_32);
 }
 
 bool is_radar(SensorType sensor_type) {

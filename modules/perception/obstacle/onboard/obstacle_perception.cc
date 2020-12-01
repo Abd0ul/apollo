@@ -117,7 +117,7 @@ bool ObstaclePerception::Process(
   PERF_BLOCK_START();
 
   std::shared_ptr<SensorObjects> sensor_objects(new SensorObjects());
-  if (frame->sensor_type_ == SensorType::VELODYNE_64) {
+  if (frame->sensor_type_ == SensorType::VELODYNE_32) {
     /// lidar obstacle detection
     VelodyneRawFrame* velodyne_frame = dynamic_cast<VelodyneRawFrame*>(frame);
     std::shared_ptr<Eigen::Matrix4d> velodyne_pose(new Eigen::Matrix4d);
@@ -187,7 +187,7 @@ bool ObstaclePerception::Process(
   if (FLAGS_enable_visualization) {
     if (obstacle_show_type_ == SHOW_FUSED) {
       frame_content_.SetTrackedObjects(fused_objects);
-      if (frame->sensor_type_ != SensorType::VELODYNE_64) {
+      if (frame->sensor_type_ != SensorType::VELODYNE_32) {
         return true;
       }
     }

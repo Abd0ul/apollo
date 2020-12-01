@@ -57,11 +57,11 @@ PbfTrack::MotionFusionMethod PbfTrack::s_motion_fusion_method_ =
 const BBAManager *PbfTrack::_s_classify_manager_ptr =
     &BBAManager::instance("classify");
 
-std::map<SensorType, double> PbfTrack::_s_sensor_factors = {{VELODYNE_64, 0.5},
+std::map<SensorType, double> PbfTrack::_s_sensor_factors = {{VELODYNE_32, 0.5},
                                                             {CAMERA, 0.95}};
 
 std::map<SensorType, double> PbfTrack::_s_sensor_factors_for_unknown = {
-    {VELODYNE_64, 0.5}, {CAMERA, 0.95}};
+    {VELODYNE_32, 0.5}, {CAMERA, 0.95}};
 
 PbfTrack::PbfTrack(std::shared_ptr<PbfSensorObject> obj)
     : _fused_bba(_s_classify_manager_ptr) {

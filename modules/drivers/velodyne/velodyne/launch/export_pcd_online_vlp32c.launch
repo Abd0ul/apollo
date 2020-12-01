@@ -1,6 +1,4 @@
 <launch>
-    <arg name="velodyne32_calibration_online" default="true" />
-    <!--If 'velodyne32_calibration_online' is true, 'velodyne32_calibration_file' will not use  -->
     <arg name="velodyne32_calibration_file" default="$(find velodyne_pointcloud)/params/VLP32C_calibration.yaml"/>
     <arg name="extrinsics_velodyne32" default="$(find velodyne_pointcloud)/params/velodyne32_novatel_extrinsics_example.yaml"/>
     <arg name="velodyne32_frame_id" default="velodyne32"/>
@@ -12,7 +10,7 @@
     <!-- 100ms -->
     <arg name="tf_query_timeout" default="0.1"/>
     <arg name="pcd_folder" value="/apollo/data/pcd" />
-    <arg name="nodelet_manager_name" value="velodyne32_nodelet_manager"/>
+    <arg name="nodelet_manager_name" value="velodyne_nodelet_manager"/>
 
 
   <include file="$(find velodyne_pointcloud)/launch/nodelet_manager.launch">
